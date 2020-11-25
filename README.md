@@ -6,7 +6,7 @@ Simple pool of workers to make API calls using the AWS SDK, while leveraging Nod
 
 -----
 
-[![Codecov](https://img.shields.io/codecov/c/gh/org-formation/worker-pool-aws-sdk)](https://codecov.io/gh/org-formation/worker-pool-aws-sdk) [![GitHub release](https://img.shields.io/github/v/release/org-formation/worker-pool-aws-sdk?include_prereleases)](https://github.com/org-formation/worker-pool-aws-sdk/releases) [![Node.js version](https://img.shields.io/badge/dynamic/json?color=brightgreen&url=https://raw.githubusercontent.com/org-formation/worker-pool-aws-sdk/master/package.json&query=$.engines.node&label=nodejs)](https://nodejs.org/)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/org-formation/worker-pool-aws-sdk/cicd/master)](https://github.com/org-formation/worker-pool-aws-sdk/actions?query=branch%3Amaster+workflow%3Acicd) [![Codecov](https://img.shields.io/codecov/c/gh/org-formation/worker-pool-aws-sdk)](https://codecov.io/gh/org-formation/worker-pool-aws-sdk) [![GitHub release](https://img.shields.io/github/v/release/org-formation/worker-pool-aws-sdk?include_prereleases)](https://github.com/org-formation/worker-pool-aws-sdk/releases) [![Node.js version](https://img.shields.io/badge/dynamic/json?color=brightgreen&url=https://raw.githubusercontent.com/org-formation/worker-pool-aws-sdk/master/package.json&query=$.engines.node&label=nodejs)](https://nodejs.org/)
 
 This library uses Node.js Worker threads (it depends more specifically on [Piscina.js](https://github.com/piscinajs/piscina)).
 
