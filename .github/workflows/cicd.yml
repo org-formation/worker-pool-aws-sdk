@@ -1,0 +1,45 @@
+---
+# Continuous Integration/Delivery
+name: cicd
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    env:
+      AWS_REGION: "us-east-1"
+      AWS_DEFAULT_REGION: "us-east-1"
+      NODE_OPTIONS: "--max_old_space_size=4096"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.13
+      - name: Install Dependencies Node.js
+        id: install_nodejs
+        run: |
+          npm ci --optional
+          npm run build
+      - name: Run Automated Testing
+        id: automated_testing
+        run: |
+          npm run lint
+          npm test
+      - name: Upload Coverage
+        id: codecov
+        run: |
+          curl -s https://codecov.io/bash > codecov.sh
+          bash codecov.sh -f coverage/coverage-final.json -F unittests
+      - name: Upload Coverage Artifacts
+        id: upload_coverage
+        uses: actions/upload-artifact@v1
+        with:
+          name: coverage
+          path: coverage/

@@ -67,4 +67,4 @@ npm test
 License
 -------
 
-This library is licensed under the [MIT License][].
+This library is licensed under the [MIT License](./LICENSE).
