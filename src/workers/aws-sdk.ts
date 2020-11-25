@@ -142,9 +142,10 @@ export default async function clientApi<
         const { name, options, operation, input, headers } = params;
         const client = getClient<S>(name, options);
         const request = client.makeRequest(operation as string, input);
-        if (headers?.length) {
+        const headerEntries = Object.entries(headers || {});
+        if (headerEntries.length) {
             request.on('build', () => {
-                for (const [key, value] of Object.entries(headers)) {
+                for (const [key, value] of headerEntries) {
                     request.httpRequest.headers[key] = value;
                 }
             });
