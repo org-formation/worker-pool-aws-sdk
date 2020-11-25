@@ -1,6 +1,11 @@
-import STS from 'aws-sdk/clients/sts';
+import { STS } from 'aws-sdk/clients/all';
+import { on, AwsServiceMockBuilder } from '@jurijzahn8019/aws-promise-jest-mock';
 
 import { WorkerPoolAwsSdk } from '../src/worker-pool';
+import clientApi from '../src/workers/aws-sdk';
+
+jest.mock('aws-sdk');
+jest.mock('aws-sdk/clients/all');
 
 describe('worker pool aws sdk', () => {
     const AWS_CONFIG = {
@@ -12,15 +17,35 @@ describe('worker pool aws sdk', () => {
     };
 
     let workerPool: WorkerPoolAwsSdk;
+    let sts: AwsServiceMockBuilder<STS>;
 
-    beforeEach(() => {
+    beforeAll(() => {
+        jest.spyOn<any, any>(WorkerPoolAwsSdk.prototype, 'runTask').mockRejectedValue(
+            Error('Method runTask should not be called.')
+        );
         workerPool = new WorkerPoolAwsSdk({ minThreads: 1, maxThreads: 1 });
+        workerPool.runTask = clientApi;
     });
 
-    afterEach(async () => {
-        await workerPool.shutdown();
+    beforeEach(() => {
+        sts = on(STS, { snapshot: false });
+        const response = {
+            Account: '123456789012',
+            Arn: 'arn:aws:iam::123456789012:user/Alice',
+            UserId: 'AKIAI44QH8DHBEXAMPLE',
+        };
+        sts.mock('getCallerIdentity').resolve(response);
+        sts.mock('makeRequest').resolve(response);
+    });
+
+    afterEach(() => {
+        workerPool.restart();
         jest.clearAllMocks();
         jest.restoreAllMocks();
+    });
+
+    afterAll(async () => {
+        await workerPool.shutdown();
     });
 
     it('should fail with running task after done', async () => {
@@ -52,16 +77,16 @@ describe('worker pool aws sdk', () => {
     });
 
     it('should succeed with simple aws call', async () => {
-        try {
-            const sts = new STS(AWS_CONFIG);
-            const result = await workerPool.runAwsTask<STS>({
-                name: 'sts',
-                options: sts.config,
-                operation: 'getCallerIdentity',
-            });
-            console.log(result);
-        } catch (err) {
-            expect(err).toBeDefined();
-        }
+        const sts = new STS(AWS_CONFIG);
+        const result = await workerPool.runAwsTask<STS>({
+            name: 'sts',
+            options: sts.config,
+            operation: 'getCallerIdentity',
+        });
+        expect(result).toMatchObject({
+            Account: '123456789012',
+            Arn: 'arn:aws:iam::123456789012:user/Alice',
+            UserId: 'AKIAI44QH8DHBEXAMPLE',
+        });
     });
 });
