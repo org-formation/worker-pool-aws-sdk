@@ -39,7 +39,7 @@ describe('aws sdk worker', () => {
         } catch (err) {
             expect(err).toMatchObject({
                 name: 'TypeError',
-                message: expect.stringContaining("Cannot destructure property 'name'"),
+                message: expect.stringContaining('Cannot destructure property'),
             });
         }
     });
