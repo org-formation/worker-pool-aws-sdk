@@ -1,6 +1,6 @@
 {
     "name": "worker-pool-aws-sdk",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Simple pool of workers to make API calls using the AWS SDK, while leveraging Node.js Worker threads.",
     "private": false,
     "main": "dist/index.js",
@@ -34,7 +34,7 @@
     },
     "homepage": "https://github.com/org-formation/worker-pool-aws-sdk#readme",
     "dependencies": {
-        "piscina": "^1.6.3",
+        "piscina": "^2.0.0",
         "serialize-error": "^7.0.1"
     },
     "devDependencies": {
