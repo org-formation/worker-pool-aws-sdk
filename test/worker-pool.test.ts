@@ -70,10 +70,16 @@ describe('worker pool aws sdk', () => {
         } catch (err) {
             expect(err.name).toBe('TypeError');
         }
-        workerPool.end();
         await workerPool.shutdown();
+        try {
+            await workerPool.runAwsTask(null);
+        } catch (err) {
+            expect(err.name).toBe('TypeError');
+        }
         await workerPool.shutdown();
         expect(workerPool.queueSize).toBe(0);
+        expect(workerPool.drained).toBe(true);
+        expect(workerPool.done).toBe(false);
     });
 
     it('should succeed with simple aws call', async () => {

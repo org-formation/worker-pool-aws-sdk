@@ -135,8 +135,8 @@ export default async function clientApi<
     N extends ServiceOperation<S, C, O, E> = ServiceOperation<S, C, O, E>
 >(params: ClientApiOptions<S, C, O, E, N>): Promise<InferredResult<S, C, O, E, N>> {
     try {
-        const nodeEnv = process.env?.NODE_ENV || 'production';
-        if (nodeEnv !== 'production') {
+        const nodeEnv = (process.env?.NODE_ENV || 'production').toLowerCase();
+        if (nodeEnv === 'development' || nodeEnv === 'dev') {
             console.debug('Client API called with parameters:', params);
         }
         const { name, options, operation, input, headers } = params;

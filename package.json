@@ -1,6 +1,6 @@
 {
     "name": "worker-pool-aws-sdk",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Simple pool of workers to make API calls using the AWS SDK, while leveraging Node.js Worker threads.",
     "private": false,
     "main": "dist/index.js",

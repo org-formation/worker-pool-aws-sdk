@@ -58,6 +58,7 @@ class WorkerPool extends Piscina {
         if (doDestroy) {
             await this.destroy();
         }
+        this.restart();
         return true;
     }
 }
