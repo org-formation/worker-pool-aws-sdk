@@ -10,10 +10,7 @@ Simple pool of workers to make API calls using the AWS SDK, while leveraging Nod
 
 This library uses Node.js Worker threads (it depends more specifically on [Piscina.js](https://github.com/piscinajs/piscina)).
 
-For Node.js 12.13.x and higher.
-
-Usage
------
+## Usage
 
 **Example**
 
@@ -42,8 +39,31 @@ const workerPool = new WorkerPoolAwsSdk();
 })();
 ```
 
-Development
------------
+## Benchmark
+
+Total duration of SAM local lambda with and without worker threads running on a Quad-core machine.
+
+### Without worker threads (40 calls)
+1. 20073.56 ms
+2. 20373.04 ms
+3. 23854.06 ms
+
+### With worker threads (40 calls)
+1. 23107.90 ms
+2. 24376.02 ms
+3. 24748.50 ms
+
+
+### Without worker threads (400 calls)
+1. 160664.08 ms
+2. 170526.89 ms
+
+### With worker threads (400 calls)
+1. 160884.88 ms
+2. 161868.81 ms
+
+
+## Development
 
 Check out the master branch and install dependencies to get started:
 
@@ -64,7 +84,6 @@ npm run lint
 npm test
 ```
 
-License
--------
+## License
 
 This library is licensed under the [MIT License](./LICENSE).

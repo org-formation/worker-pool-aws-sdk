@@ -135,16 +135,17 @@ export default async function clientApi<
     N extends ServiceOperation<S, C, O, E> = ServiceOperation<S, C, O, E>
 >(params: ClientApiOptions<S, C, O, E, N>): Promise<InferredResult<S, C, O, E, N>> {
     try {
-        const nodeEnv = process.env?.NODE_ENV || 'production';
-        if (nodeEnv !== 'production') {
+        const nodeEnv = (process.env?.NODE_ENV || 'production').toLowerCase();
+        if (nodeEnv === 'development' || nodeEnv === 'dev') {
             console.debug('Client API called with parameters:', params);
         }
         const { name, options, operation, input, headers } = params;
         const client = getClient<S>(name, options);
         const request = client.makeRequest(operation as string, input);
-        if (headers?.length) {
+        const headerEntries = Object.entries(headers || {});
+        if (headerEntries.length) {
             request.on('build', () => {
-                for (const [key, value] of Object.entries(headers)) {
+                for (const [key, value] of headerEntries) {
                     request.httpRequest.headers[key] = value;
                 }
             });
